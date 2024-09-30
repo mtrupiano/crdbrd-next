@@ -1,14 +1,14 @@
 "use server"
 
 import {
-  signIn as naSignIn,
-  signOut as naSignOut,
+  signIn as nextAuthSignIn,
+  signOut as nextAuthSignOut,
 } from ".";
 
 export async function signIn() {
-  await naSignIn();
+  await nextAuthSignIn();
 };
 
 export async function signOut() {
-  await naSignOut();
+  await nextAuthSignOut();
 };

@@ -7,6 +7,7 @@ export default async function RegisterPage() {
       style={{
         display: "flex",
         justifyContent: "center",
+        padding: "100px",
       }}
     >
       <RegisterForm />

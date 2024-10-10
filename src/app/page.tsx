@@ -5,8 +5,8 @@ export default async function Home() {
   const session = await auth();
 
   if (!session) {
-    redirect("/register?redirect=/");
+    redirect("/auth/signin");
   }
 
-  return <div>Hello</div>;
+  return <div>Hello {JSON.stringify(session?.user)}</div>;
 }

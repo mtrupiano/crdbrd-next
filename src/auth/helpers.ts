@@ -5,10 +5,10 @@ import {
   signOut as nextAuthSignOut,
 } from ".";
 
-export async function signIn() {
-  await nextAuthSignIn();
-};
+export async function signIn(...args) {
+  await nextAuthSignIn(args);
+}
 
-export async function signOut() {
-  await nextAuthSignOut();
+export async function signOut(...args) {
+  await nextAuthSignOut(args);
 };

@@ -1,0 +1,108 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+generator pothos {
+  provider = "prisma-pothos-types"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id          Int               @id @default(autoincrement())
+  createdAt   DateTime          @default(now()) @db.Timestamptz(3)
+  updatedAt   DateTime          @updatedAt @db.Timestamptz(3)
+  archivedAt  DateTime?         @db.Timestamptz(3)
+  email       String            @unique @db.VarChar(256)
+  password    String?           @db.Text
+  role        Role              @default(USER)
+  collections CollectionSpace[]
+}
+
+enum Role {
+  ADMIN
+  USER
+}
+
+model CollectionSpace {
+  id                   Int                   @id @default(autoincrement())
+  createdAt            DateTime              @default(now()) @db.Timestamptz(3)
+  updatedAt            DateTime              @updatedAt @db.Timestamptz(3)
+  archivedAt           DateTime?             @db.Timestamptz(3)
+  visibility           Visibility            @default(PRIVATE)
+  userId               Int
+  user                 User                  @relation(fields: [userId], references: [id])
+  realWorldLocations   RealWorldLocation[]
+  customCardAttributes CustomCardAttribute[]
+  name                 String
+}
+
+model RealWorldLocation {
+  id                Int                   @id @default(autoincrement())
+  createdAt         DateTime              @default(now()) @db.Timestamptz(3)
+  updatedAt         DateTime              @updatedAt @db.Timestamptz(3)
+  archivedAt        DateTime?             @db.Timestamptz(3)
+  name              String
+  description       String?
+  locationType      RealWorldLocationType @default(BINDER)
+  collectionSpaceId Int
+  visibility        Visibility            @default(PRIVATE)
+  collectionSpace   CollectionSpace       @relation(fields: [collectionSpaceId], references: [id])
+  cards             CollectedCard[]
+}
+
+enum RealWorldLocationType {
+  DECK
+  CUBE
+  BINDER
+}
+
+model CollectedCard {
+  id           Int                 @id @default(autoincrement())
+  createdAt    DateTime            @default(now()) @db.Timestamptz(3)
+  updatedAt    DateTime            @updatedAt @db.Timestamptz(3)
+  archivedAt   DateTime?           @db.Timestamptz(3)
+  multiverseId String
+  locationId   Int
+  location     RealWorldLocation   @relation(fields: [locationId], references: [id])
+  attributes   AttributesOnCards[]
+}
+
+model CustomCardAttribute {
+  id                 Int                 @id @default(autoincrement())
+  createdAt          DateTime            @default(now()) @db.Timestamptz(3)
+  updatedAt          DateTime            @updatedAt @db.Timestamptz(3)
+  archivedAt         DateTime?           @db.Timestamptz(3)
+  name               String
+  description        String?
+  collectionSpaceId  Int
+  collectionSpace    CollectionSpace     @relation(fields: [collectionSpaceId], references: [id])
+  cardsWithAttribute AttributesOnCards[]
+}
+
+model AttributesOnCards {
+  createdAt   DateTime            @default(now()) @db.Timestamptz(3)
+  updatedAt   DateTime            @updatedAt @db.Timestamptz(3)
+  archivedAt  DateTime?           @db.Timestamptz(3)
+  attributeId Int
+  attribute   CustomCardAttribute @relation(fields: [attributeId], references: [id])
+  cardId      Int
+  card        CollectedCard       @relation(fields: [cardId], references: [id])
+
+  @@id([cardId, attributeId])
+}
+
+enum Visibility {
+  PRIVATE
+  UNLISTED
+  PUBLIC
+}

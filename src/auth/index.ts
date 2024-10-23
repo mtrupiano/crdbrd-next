@@ -35,12 +35,9 @@ const authOptions: NextAuthConfig = {
             },
           },
         );
-        console.log(await response.json());
-
-        return {
-          id: 1,
-          email: "test@test.test",
-        };
+        const res = await response.json();
+        console.log(res);
+        return res.user;
       },
     }),
   ],

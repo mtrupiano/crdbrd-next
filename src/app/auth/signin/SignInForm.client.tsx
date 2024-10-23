@@ -2,13 +2,14 @@
 import { FormEvent } from "react";
 import { TextField, Button, Grid2, Link } from "@mui/material";
 import { signIn as nextAuthSignIn } from "next-auth/react";
+import PasswordTextField from "../PasswordTextField.client";
 
 export default function SignInFormClient() {
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const formData = new FormData(event.currentTarget);
     nextAuthSignIn("credentials", {
-      email: formData.get("email"),
+      email: formData.get("email").trim(),
       password: formData.get("password"),
     });
   };
@@ -29,10 +30,7 @@ export default function SignInFormClient() {
           />
         </Grid2>
         <Grid2>
-          <TextField
-            type="password"
-            name="password"
-            label="Password"
+          <PasswordTextField
             size="small"
             fullWidth={true}
             sx={{

@@ -8,7 +8,7 @@ export async function register(formData: FormData): RegisterActionResponse {
   // Putting form data validation in server action as opposed to API endpoint
   // to potentially implement useActionState in the future
 
-  const email = formData.get("email");
+  const email = formData.get("email").trim();
   const password = formData.get("password");
   const validationResult = RegisterFormSchema.safeParse({
     email,

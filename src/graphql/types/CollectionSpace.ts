@@ -5,6 +5,7 @@ builder.prismaObject("CollectionSpace", {
   fields: (t) => ({
     id: t.exposeInt("id"),
     name: t.exposeString("name"),
+    description: t.exposeString("description"),
     visibility: t.expose("visibility", { type: VISIBILITY }),
     userId: t.exposeInt("userId"),
     realWorldLocations: t.relation("realWorldLocations"),

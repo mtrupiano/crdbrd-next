@@ -44,6 +44,8 @@ model CollectionSpace {
   realWorldLocations   RealWorldLocation[]
   customCardAttributes CustomCardAttribute[]
   name                 String
+  description String?
+  @@unique([userId, name])
 }
 
 model RealWorldLocation {

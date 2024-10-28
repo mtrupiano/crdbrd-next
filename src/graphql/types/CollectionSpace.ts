@@ -10,34 +10,64 @@ builder.prismaObject("CollectionSpace", {
     userId: t.exposeInt("userId"),
     realWorldLocations: t.relation("realWorldLocations"),
     customCardAttributes: t.relation("customCardAttributes"),
+    archivedAt: t.expose("archivedAt", { type: "Date" }),
+    createdAt: t.expose("createdAt", { type: "Date" }),
+    updatedAt: t.expose("updatedAt", { type: "Date" }),
   }),
 });
 
-builder.queryField("collectionsForUser", (t) =>
+builder.mutationField("createCollectionMutation", (t) =>
+  t.prismaField({
+    type: "CollectionSpace",
+    authScopes: {
+      loggedInUser: true,
+    },
+    args: {
+      name: t.arg({
+        type: "String",
+        required: true,
+      }),
+      description: t.arg({
+        type: "String",
+        required: false,
+      }),
+    },
+    resolve: (query, root, args, { user }) => {
+      const userId = parseInt(user.id);
+      return prisma.collectionSpace.create({
+        ...query,
+        data: {
+          ...args,
+          userId,
+        },
+      });
+    },
+  }),
+);
+
+builder.queryField("collectionSpaces", (t) =>
   t.prismaConnection({
     type: "CollectionSpace",
     cursor: "id",
     authScopes: {
       loggedInUser: true,
     },
-    args: {
-      userId: t.arg({
-        type: "Int",
-        description: "User database ID",
-      }),
-    },
-    resolve: async (query, root, args) => {
+    resolve: async (query, root, args, context) => {
       return prisma.collectionSpace.findMany({
         ...query,
-        where: { userId: args.userId },
+        where: { userId: parseInt((await context).user.id) },
       });
     },
   }),
 );
 
-builder.queryField("collections", (t) =>
+builder.queryField("adminAllCollectionSpaces", (t) =>
   t.prismaConnection({
     type: "CollectionSpace",
+    authScopes: {
+      loggedInUser: true,
+      loggedInAdmin: true,
+    },
     cursor: "id",
     resolve: (query) => {
       return prisma.collectionSpace.findMany({ ...query });

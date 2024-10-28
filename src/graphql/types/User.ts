@@ -6,6 +6,9 @@ builder.prismaObject("User", {
     email: t.exposeString("email"),
     role: t.expose("role", { type: ROLE }),
     collectionSpaces: t.relation("collections"),
+    archivedAt: t.expose("archivedAt", { type: "Date" }),
+    createdAt: t.expose("createdAt", { type: "Date" }),
+    updatedAt: t.expose("updatedAt", { type: "Date" }),
   }),
 });
 
@@ -34,9 +37,13 @@ builder.queryField("user", (t) =>
   }),
 );
 
-builder.queryField("users", (t) =>
+builder.queryField("adminAllUsers", (t) =>
   t.prismaConnection({
     type: "User",
+    authScopes: {
+      loggedInUser: true,
+      loggedInAdmin: true,
+    },
     cursor: "id",
     resolve: (query) => {
       return prisma.user.findMany({ ...query });

@@ -10,6 +10,9 @@ builder.prismaObject("RealWorldLocation", {
     collectionSpaceId: t.exposeID("collectionSpaceId"),
     visibility: t.expose("visibility", { type: VISIBILITY }),
     cards: t.relation("cards"),
+    archivedAt: t.expose("archivedAt", { type: "Date" }),
+    createdAt: t.expose("createdAt", { type: "Date" }),
+    updatedAt: t.expose("updatedAt", { type: "Date" }),
   }),
 });
 

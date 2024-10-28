@@ -2,7 +2,7 @@
 
 import { RegisterFormSchema } from "@/app/lib/definitions";
 import { RegisterActionResponse } from "./types";
-import { signIn } from "@/auth/helpers";
+import { signIn } from "@/lib/auth/helpers";
 
 export async function register(formData: FormData): RegisterActionResponse {
   // Putting form data validation in server action as opposed to API endpoint

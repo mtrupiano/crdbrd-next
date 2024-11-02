@@ -18,7 +18,7 @@ datasource db {
 }
 
 model User {
-  id          Int               @id @default(autoincrement())
+  id          String            @id @default(uuid())
   createdAt   DateTime          @default(now()) @db.Timestamptz(3)
   updatedAt   DateTime          @updatedAt @db.Timestamptz(3)
   archivedAt  DateTime?         @db.Timestamptz(3)
@@ -34,29 +34,31 @@ enum Role {
 }
 
 model CollectionSpace {
-  id                   Int                   @id @default(autoincrement())
+  id                   String                @id @default(uuid())
   createdAt            DateTime              @default(now()) @db.Timestamptz(3)
   updatedAt            DateTime              @updatedAt @db.Timestamptz(3)
   archivedAt           DateTime?             @db.Timestamptz(3)
   visibility           Visibility            @default(PRIVATE)
-  userId               Int
+  userId               String
   user                 User                  @relation(fields: [userId], references: [id])
   realWorldLocations   RealWorldLocation[]
   customCardAttributes CustomCardAttribute[]
+  cards                CollectedCard[]
   name                 String
-  description String?
+  description          String?
+
   @@unique([userId, name])
 }
 
 model RealWorldLocation {
-  id                Int                   @id @default(autoincrement())
+  id                String                @id @default(uuid())
   createdAt         DateTime              @default(now()) @db.Timestamptz(3)
   updatedAt         DateTime              @updatedAt @db.Timestamptz(3)
   archivedAt        DateTime?             @db.Timestamptz(3)
   name              String
   description       String?
   locationType      RealWorldLocationType @default(BINDER)
-  collectionSpaceId Int
+  collectionSpaceId String
   visibility        Visibility            @default(PRIVATE)
   collectionSpace   CollectionSpace       @relation(fields: [collectionSpaceId], references: [id])
   cards             CollectedCard[]
@@ -69,24 +71,26 @@ enum RealWorldLocationType {
 }
 
 model CollectedCard {
-  id           Int                 @id @default(autoincrement())
-  createdAt    DateTime            @default(now()) @db.Timestamptz(3)
-  updatedAt    DateTime            @updatedAt @db.Timestamptz(3)
-  archivedAt   DateTime?           @db.Timestamptz(3)
-  multiverseId String
-  locationId   Int
-  location     RealWorldLocation   @relation(fields: [locationId], references: [id])
-  attributes   AttributesOnCards[]
+  id                String              @id @default(uuid())
+  createdAt         DateTime            @default(now()) @db.Timestamptz(3)
+  updatedAt         DateTime            @updatedAt @db.Timestamptz(3)
+  archivedAt        DateTime?           @db.Timestamptz(3)
+  multiverseId      String
+  locationId        String?
+  location          RealWorldLocation?  @relation(fields: [locationId], references: [id])
+  collectionSpace   CollectionSpace?    @relation(fields: [collectionSpaceId], references: [id])
+  collectionSpaceId String?
+  attributes        AttributesOnCards[]
 }
 
 model CustomCardAttribute {
-  id                 Int                 @id @default(autoincrement())
+  id                 String              @id @default(uuid())
   createdAt          DateTime            @default(now()) @db.Timestamptz(3)
   updatedAt          DateTime            @updatedAt @db.Timestamptz(3)
   archivedAt         DateTime?           @db.Timestamptz(3)
   name               String
   description        String?
-  collectionSpaceId  Int
+  collectionSpaceId  String
   collectionSpace    CollectionSpace     @relation(fields: [collectionSpaceId], references: [id])
   cardsWithAttribute AttributesOnCards[]
 }
@@ -95,9 +99,9 @@ model AttributesOnCards {
   createdAt   DateTime            @default(now()) @db.Timestamptz(3)
   updatedAt   DateTime            @updatedAt @db.Timestamptz(3)
   archivedAt  DateTime?           @db.Timestamptz(3)
-  attributeId Int
+  attributeId String
   attribute   CustomCardAttribute @relation(fields: [attributeId], references: [id])
-  cardId      Int
+  cardId      String
   card        CollectedCard       @relation(fields: [cardId], references: [id])
 
   @@id([cardId, attributeId])

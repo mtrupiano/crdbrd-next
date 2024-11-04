@@ -62,6 +62,7 @@ model RealWorldLocation {
   visibility        Visibility            @default(PRIVATE)
   collectionSpace   CollectionSpace       @relation(fields: [collectionSpaceId], references: [id])
   cards             CollectedCard[]
+  @@unique([collectionSpaceId, name])
 }
 
 enum RealWorldLocationType {
@@ -93,6 +94,7 @@ model CustomCardAttribute {
   collectionSpaceId  String
   collectionSpace    CollectionSpace     @relation(fields: [collectionSpaceId], references: [id])
   cardsWithAttribute AttributesOnCards[]
+  @@unique([collectionSpaceId, name])
 }
 
 model AttributesOnCards {
@@ -105,6 +107,7 @@ model AttributesOnCards {
   card        CollectedCard       @relation(fields: [cardId], references: [id])
 
   @@id([cardId, attributeId])
+  @@unique([cardId, attributeId])
 }
 
 enum Visibility {

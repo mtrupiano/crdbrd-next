@@ -5,6 +5,7 @@ builder.prismaObject("AttributesOnCards", {
     attributeId: t.exposeID("attributeId"),
     cardId: t.exposeID("cardId"),
     attribute: t.relation("attribute"),
+    card: t.relation("card"),
   }),
 });
 

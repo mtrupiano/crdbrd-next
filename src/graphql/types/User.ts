@@ -2,7 +2,7 @@ import { builder } from "../builder";
 
 builder.prismaObject("User", {
   fields: (t) => ({
-    id: t.exposeInt("id"),
+    id: t.exposeID("id"),
     email: t.exposeString("email"),
     role: t.expose("role", { type: ROLE }),
     collectionSpaces: t.relation("collections"),
@@ -26,7 +26,7 @@ builder.queryField("user", (t) =>
         description: "User email",
       }),
       id: t.arg({
-        type: "Int",
+        type: "ID",
         description: "User database ID",
       }),
     },

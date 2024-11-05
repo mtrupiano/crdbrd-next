@@ -1,10 +1,6 @@
-import "./types/User";
-import "./types/CollectionSpace";
-import "./types/RealWorldLocation";
-import "./types/CollectedCard";
-import "./types/CustomCardAttribute";
-import "./types/AttributesOnCards";
-// import "./types/CollectedCardAttributes";
+import "./types";
+import "./mutations";
+import "./queries";
 
 import { builder } from "./builder";
 

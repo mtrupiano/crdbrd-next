@@ -1,0 +1,2 @@
+import "./collectionSpaceQueries";
+import "./collectedCardQueries";

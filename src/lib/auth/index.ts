@@ -1,5 +1,7 @@
 import NextAuth, { User, NextAuthConfig } from "next-auth";
 import Credentials from "next-auth/providers/credentials";
+import bcrypt from "bcrypt";
+import prisma from "@/lib/prisma/prisma";
 
 export const BASE_PATH = "/api/auth";
 
@@ -11,13 +13,13 @@ const authOptions: NextAuthConfig = {
     strategy: "jwt",
   },
   callbacks: {
-    session: async ({ session, token }) => {
+    async session({ session, token }) {
       if (session?.user) {
         session.user.id = token.sub;
       }
       return session;
     },
-    jwt: async ({ user, token }) => {
+    async jwt({ user, token }) {
       if (user) {
         token.uid = user.id;
       }
@@ -36,22 +38,19 @@ const authOptions: NextAuthConfig = {
         email: string;
         password: string;
       }): Promise<User | null> {
-        const response = await fetch(
-          `${process.env.KTOR_API_URL}/api/auth/login`,
-          {
-            method: "POST",
-            body: JSON.stringify({
-              email: credentials.email,
-              password: credentials.password,
-            }),
-            headers: {
-              "Content-Type": "application/json",
-            },
+        const { email, password } = credentials;
+        const user = await prisma.user.findUnique({
+          where: {
+            email,
           },
-        );
-        const res = await response.json();
-        console.log(res);
-        return res.user;
+        });
+        const passwordsMatch = await bcrypt.compare(password, user?.password);
+
+        if (!user || !passwordsMatch) {
+          return null;
+        }
+
+        return user;
       },
     }),
   ],

@@ -2,9 +2,11 @@
 import { FormEvent } from "react";
 import { TextField, Button, Grid2, Link } from "@mui/material";
 import { signIn as nextAuthSignIn } from "next-auth/react";
+import { useSearchParams } from "next/navigation";
 import PasswordTextField from "../PasswordTextField.client";
 
 export default function SignInFormClient() {
+  const searchParams = useSearchParams();
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const formData = new FormData(event.currentTarget);
@@ -38,6 +40,15 @@ export default function SignInFormClient() {
             }}
           />
         </Grid2>
+
+        {searchParams.get("error") === "CredentialsSignin" && (
+          <Grid2>
+            <div style={{ color: "red" }}>
+              Did not find user with those credentials
+            </div>
+          </Grid2>
+        )}
+
         <Grid2>
           <Button type="submit">Sign In</Button>
         </Grid2>

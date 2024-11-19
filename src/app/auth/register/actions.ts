@@ -22,7 +22,7 @@ export async function register(formData: FormData): RegisterActionResponse {
   }
 
   const response = await fetch(
-    `${process.env.KTOR_API_URL}/api/auth/register`,
+    `${process.env.NEXTJS_SERVER_URL}/api/auth/register`,
     {
       method: "POST",
       body: JSON.stringify({

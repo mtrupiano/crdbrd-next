@@ -22,11 +22,12 @@ export const builder = new SchemaBuilder<{
     client: prisma,
   },
   scopeAuth: {
-    authScopes: async () => ({
+    authScopes: async (context) => ({
       public: true,
       loggedInUser: async () => !!(await auth()),
       loggedInAdmin: () => {
         // TODO: implement user role check
+        console.log({ context });
         return true;
       },
     }),

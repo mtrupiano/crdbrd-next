@@ -10,7 +10,7 @@ builder.queryField("collectionSpaces", (t) =>
     resolve: async (query, root, args, context) => {
       return prisma.collectionSpace.findMany({
         ...query,
-        where: { userId: parseInt((await context).user.id) },
+        where: { userId: (await context).user.id },
       });
     },
   }),

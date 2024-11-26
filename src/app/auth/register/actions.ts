@@ -1,6 +1,6 @@
 "use server";
 
-import { RegisterFormSchema } from "@/app/lib/definitions";
+import { RegisterFormSchema } from "@/app/_lib/definitions";
 import { RegisterActionResponse } from "./types";
 import { signIn } from "@/lib/auth/helpers";
 

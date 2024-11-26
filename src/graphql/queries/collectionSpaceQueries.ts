@@ -36,6 +36,7 @@ builder.queryField("collectionSpace", (t) =>
     args: {
       id: t.arg({
         type: "String",
+        description: "CollectionSpace database ID",
         required: true,
       }),
     },
@@ -45,7 +46,7 @@ builder.queryField("collectionSpace", (t) =>
     resolve: (query, root, args) => {
       return prisma.collectionSpace.findFirst({
         ...query,
-        where: { id: parseInt(args.id) },
+        where: { id: args.id },
       });
     },
   }),

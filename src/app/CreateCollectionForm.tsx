@@ -4,6 +4,7 @@ import { ApolloProvider, gql, useMutation, useQuery } from "@apollo/client";
 import { Button, TextField } from "@mui/material";
 import { FormEvent } from "react";
 import apolloClient from "@/lib/apollo";
+import Link from "next/link";
 
 export default function CreateCollectionFormWrapper() {
   return (
@@ -96,7 +97,12 @@ function CreateCollectionForm() {
           Create Collection
         </Button>
       </form>
-      <div>{JSON.stringify(collectionSpacesQueryData?.collectionSpaces)}</div>
+      {collectionSpacesQueryData?.collectionSpaces &&
+        collectionSpacesQueryData.collectionSpaces?.edges.map((col) => (
+          <Link key={col.node.id} href={`/collection/${col.node.id}`}>
+            {col.node.name}
+          </Link>
+        ))}
       {collectionSpacesQueryData?.collectionSpaces.pageInfo.hasNextPage && (
         <Button onClick={handleFetchMore}>Fetch More</Button>
       )}

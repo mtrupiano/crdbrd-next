@@ -16,7 +16,7 @@ export const builder = new SchemaBuilder<{
     loggedInUser: boolean;
   };
 }>({
-  plugins: [PrismaPlugin, RelayPlugin, AuthScopePlugin],
+  plugins: [AuthScopePlugin, PrismaPlugin, RelayPlugin],
   relayOptions: {},
   prisma: {
     client: prisma,

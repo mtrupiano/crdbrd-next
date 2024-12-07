@@ -2,7 +2,6 @@
 
 Full stack web application for tracking Magic the Gathering collection
 - PostgreSQL database
-- Ktor API for credentials auth
 - Prisma ORM
 - GraphQL API (Yoga Server, Pothos)
 - NextJS front end

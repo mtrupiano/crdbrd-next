@@ -39,7 +39,7 @@ const CREATE_LOCATION_MUTATION = gql`
   mutation CreateLocation(
     $name: String!
     $description: String
-    $collectionSpaceId: ID!
+    $collectionSpaceId: String!
   ) {
     createLocationMutation(
       name: $name

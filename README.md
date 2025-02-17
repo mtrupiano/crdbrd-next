@@ -1,6 +1,6 @@
 # CRDBRD
 
-Full stack web application for tracking Magic the Gathering collection
+Full stack web application for tracking Magic the Gathering collections
 - PostgreSQL database
 - Prisma ORM
 - GraphQL API (Yoga Server, Pothos)

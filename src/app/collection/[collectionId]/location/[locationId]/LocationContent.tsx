@@ -11,7 +11,7 @@ export default function LocationContent({
     LOCATION_CONTENT_QUERY,
     {
       variables: {
-        id: locationId,
+        locationId,
       },
     },
   );
@@ -48,7 +48,7 @@ export default function LocationContent({
 
 const LOCATION_CONTENT_QUERY = gql`
   query realWorldLocationQuery($locationId: String!) {
-    realWorldLocation(id: $locationId) {
+    realWorldLocation(locationId: $locationId) {
       id
       name
       description

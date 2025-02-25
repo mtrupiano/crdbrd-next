@@ -7,7 +7,7 @@ builder.queryField("realWorldLocation", (t) =>
       loggedInUser: true,
     },
     args: {
-      id: t.arg({
+      locationId: t.arg({
         type: "String",
         description: "RealWorldLocation database ID",
         required: true,
@@ -17,7 +17,7 @@ builder.queryField("realWorldLocation", (t) =>
       return prisma.realWorldLocation.findFirst({
         ...query,
         where: {
-          id: args.id,
+          id: args.locationId,
         },
       });
     },

@@ -18,14 +18,17 @@ datasource db {
 }
 
 model User {
-  id          String            @id @default(cuid())
-  createdAt   DateTime          @default(now()) @db.Timestamptz(3)
-  updatedAt   DateTime          @updatedAt @db.Timestamptz(3)
-  archivedAt  DateTime?         @db.Timestamptz(3)
-  email       String            @unique @db.VarChar(256)
-  password    String?           @db.Text
-  role        Role              @default(USER)
-  collections CollectionSpace[]
+  id                   String                @id @default(cuid())
+  createdAt            DateTime              @default(now()) @db.Timestamptz(3)
+  updatedAt            DateTime              @updatedAt @db.Timestamptz(3)
+  archivedAt           DateTime?             @db.Timestamptz(3)
+  email                String                @unique @db.VarChar(256)
+  password             String?               @db.Text
+  role                 Role                  @default(USER)
+  collections          CollectionSpace[]
+  realWorldLocations   RealWorldLocation[]
+  collectedCards       CollectedCard[]
+  customCardAttributes CustomCardAttribute[]
 }
 
 enum Role {
@@ -59,9 +62,12 @@ model RealWorldLocation {
   description       String?
   locationType      RealWorldLocationType @default(BINDER)
   collectionSpaceId String
+  userId            String
+  user              User                  @relation(fields: [userId], references: [id])
   visibility        Visibility            @default(PRIVATE)
   collectionSpace   CollectionSpace       @relation(fields: [collectionSpaceId], references: [id])
   cards             CollectedCard[]
+
   @@unique([collectionSpaceId, name])
 }
 
@@ -78,7 +84,9 @@ model CollectedCard {
   archivedAt        DateTime?           @db.Timestamptz(3)
   multiverseId      String
   locationId        String?
-  location          RealWorldLocation?  @relation(fields: [locationId], references: [id])
+  userId            String
+  user              User                @relation(fields: [userId], references: [id])
+  realWorldLocation RealWorldLocation?  @relation(fields: [locationId], references: [id])
   collectionSpace   CollectionSpace?    @relation(fields: [collectionSpaceId], references: [id])
   collectionSpaceId String?
   attributes        AttributesOnCards[]
@@ -92,8 +100,11 @@ model CustomCardAttribute {
   name               String
   description        String?
   collectionSpaceId  String
+  userId             String
+  user               User                @relation(fields: [userId], references: [id])
   collectionSpace    CollectionSpace     @relation(fields: [collectionSpaceId], references: [id])
   cardsWithAttribute AttributesOnCards[]
+
   @@unique([collectionSpaceId, name])
 }
 

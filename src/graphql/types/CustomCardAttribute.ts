@@ -8,6 +8,7 @@ builder.prismaObject("CustomCardAttribute", {
     value: t.exposeString("value"),
     cardsWithAttribute: t.relation("cardsWithAttribute"),
     collectionSpaceId: t.exposeID("collectionSpaceId"),
+    userId: t.exposeID("userId"),
   }),
 });
 

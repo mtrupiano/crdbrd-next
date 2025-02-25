@@ -1,4 +1,3 @@
-import { prisma } from "@prisma/client";
 import { builder } from "../builder";
 
 builder.mutationField("updateCardLocation", (t) =>

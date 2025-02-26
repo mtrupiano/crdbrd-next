@@ -37,12 +37,13 @@ builder.mutationField("createLocationMutation", (t) =>
       description: t.arg({ type: "String", required: false }),
       collectionSpaceId: t.arg({ type: "String", required: true }),
     },
-    resolve: async (query, root, args) => {
+    resolve: async (query, root, args, { user }) => {
       return await prisma.realWorldLocation.create({
         data: {
           name: args.name,
           description: args.description,
           collectionSpaceId: args.collectionSpaceId,
+          userId: user.id,
         },
       });
     },

@@ -48,7 +48,7 @@ builder.mutationField("collectCard", (t) =>
         ...query,
         data: {
           userId: user.id,
-          collectionId,
+          collectionSpaceId: collectionId,
           locationId,
           multiverseId,
         },

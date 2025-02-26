@@ -1,3 +1,6 @@
+# generated files
+__generated__/
+
 # db migrations
 migration.sql
 

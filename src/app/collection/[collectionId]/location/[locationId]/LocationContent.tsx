@@ -1,6 +1,7 @@
-import { gql, useMutation, useQuery } from "@apollo/client";
+import { useMutation, useQuery } from "@apollo/client";
 import { Button, TextField } from "@mui/material";
 import { FormEvent } from "react";
+import { gql } from "@/__generated__";
 
 export default function LocationContent({
   locationId,

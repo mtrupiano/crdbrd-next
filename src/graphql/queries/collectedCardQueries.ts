@@ -1,15 +1,5 @@
 import { builder } from "../builder";
 
-builder.queryField("cards", (t) =>
-  t.prismaConnection({
-    type: "CollectedCard",
-    cursor: "id",
-    resolve: (query) => {
-      return prisma.collectedCards.findMany({ ...query });
-    },
-  }),
-);
-
 builder.queryField("cardsInCollection", (t) =>
   t.prismaConnection({
     type: "CollectedCard",
@@ -38,7 +28,7 @@ builder.queryField("cardsInLocation", (t) =>
     args: {
       locationId: t.arg({
         type: "ID",
-        description: "Location UUID",
+        description: "Location database UUID",
       }),
     },
     resolve: (query, root, args) => {

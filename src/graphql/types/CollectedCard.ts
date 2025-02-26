@@ -3,10 +3,13 @@ import { builder } from "../builder";
 builder.prismaObject("CollectedCard", {
   fields: (t) => ({
     id: t.exposeID("id"),
-    userId: t.exposeID("userId"),
     multiverseId: t.exposeString("multiverseId"),
-    locationId: t.exposeID("locationId"),
-    collectionId: t.exposeID("collectionId"),
     attributes: t.relation("attributes"),
+    user: t.relation("user"),
+    userId: t.exposeID("userId"),
+    collectionSpace: t.relation("collectionSpace"),
+    collectionSpaceId: t.exposeID("collectionSpaceId"),
+    location: t.relation("realWorldLocation"),
+    locationId: t.exposeID("locationId"),
   }),
 });

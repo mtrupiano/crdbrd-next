@@ -8,6 +8,8 @@ builder.prismaObject("RealWorldLocation", {
     description: t.exposeString("description"),
     locationType: t.expose("locationType", { type: LOCATION_TYPE }),
     collectionSpaceId: t.exposeID("collectionSpaceId"),
+    collectionSpace: t.relation("collectionSpace"),
+    user: t.relation("user"),
     visibility: t.expose("visibility", { type: VISIBILITY }),
     cards: t.relation("cards"),
     archivedAt: t.expose("archivedAt", { type: "Date" }),

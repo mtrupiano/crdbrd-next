@@ -72,6 +72,10 @@ const COLLECTION_CONTENT_QUERY = gql`
       realWorldLocations {
         id
         name
+        collectionSpace {
+          id
+          name
+        }
         cards {
           id
           multiverseId

@@ -78,6 +78,12 @@ function CreateCollectionForm() {
     });
   };
 
+  const handleDeleteCollection = (id: string) => {
+    console.log("TODO: Handle delete collection", id);
+    // if collection contains any cards, ask user which collection they should be moved to
+    // bulk move operation dispatched to event stream?
+  };
+
   return (
     <>
       <form
@@ -97,15 +103,25 @@ function CreateCollectionForm() {
           Create Collection
         </Button>
       </form>
-      {collectionSpacesQueryData?.collectionSpaces &&
-        collectionSpacesQueryData.collectionSpaces?.edges.map((col) => (
-          <Link key={col.node.id} href={`/collection/${col.node.id}`}>
-            {col.node.name}
-          </Link>
-        ))}
-      {collectionSpacesQueryData?.collectionSpaces.pageInfo.hasNextPage && (
-        <Button onClick={handleFetchMore}>Fetch More</Button>
-      )}
+      <div>
+        {collectionSpacesQueryData?.collectionSpaces &&
+          collectionSpacesQueryData.collectionSpaces?.edges.map((col) => (
+            <div key={col.node.id}>
+              <Link key={col.node.id} href={`/collection/${col.node.id}`}>
+                {col.node.name}
+              </Link>
+              <Button
+                color="error"
+                onClick={() => handleDeleteCollection(col.node.id)}
+              >
+                Delete
+              </Button>
+            </div>
+          ))}
+        {collectionSpacesQueryData?.collectionSpaces.pageInfo.hasNextPage && (
+          <Button onClick={handleFetchMore}>Fetch More</Button>
+        )}
+      </div>
     </>
   );
 }

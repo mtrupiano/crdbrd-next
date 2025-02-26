@@ -8,7 +8,7 @@ export default function LocationContent({
 }: {
   locationId: string;
 }) {
-  const { data: realWorldLocationQueryData } = useQuery(
+  const { loading, data: realWorldLocationQueryData } = useQuery(
     LOCATION_CONTENT_QUERY,
     {
       variables: {
@@ -29,20 +29,50 @@ export default function LocationContent({
       variables: {
         locationId,
         multiverseId,
-        collectionId: "",
+        collectionId:
+          realWorldLocationQueryData.realWorldLocation.collectionSpace.id,
       },
     });
 
     console.log(addCardToLocationMutationData);
   };
 
+  const collectionSpaceId =
+    realWorldLocationQueryData?.realWorldLocation.collectionSpace.id;
+
   return (
     <div>
-      <pre>{JSON.stringify(realWorldLocationQueryData)}</pre>
+      {loading ? (
+        <>Loading...</>
+      ) : (
+        <div className="flex p-2 space-x-2 items-center">
+          <a href={`/collection/${collectionSpaceId}`}>
+            <span className="text-lg">
+              {
+                realWorldLocationQueryData.realWorldLocation.collectionSpace
+                  .name
+              }
+            </span>
+          </a>
+          <span>&gt;</span>
+          <a href={`/collection/${collectionSpaceId}/location/${locationId}`}>
+            <span className="text-lg">
+              {realWorldLocationQueryData.realWorldLocation.name},{" "}
+              {realWorldLocationQueryData.realWorldLocation.description}
+            </span>
+          </a>
+        </div>
+      )}
       <form onSubmit={handleAddCard}>
         <TextField label="Card Multiverse ID" name="multiverseId" />
         <Button type="submit">Add</Button>
       </form>
+
+      <div>
+        {realWorldLocationQueryData?.realWorldLocation.cards.map((card) => (
+          <div key={card.multiverseId}>{card.multiverseId}</div>
+        ))}
+      </div>
     </div>
   );
 }
@@ -53,7 +83,12 @@ const LOCATION_CONTENT_QUERY = gql`
       id
       name
       description
+      collectionSpace {
+        id
+        name
+      }
       cards {
+        id
         multiverseId
       }
     }
@@ -74,7 +109,7 @@ const ADD_CARD_TO_LOCATION_MUTATION = gql`
       id
       multiverseId
       locationId
-      collectionId
+      collectionSpaceId
     }
   }
 `;

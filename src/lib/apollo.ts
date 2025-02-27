@@ -1,19 +1,34 @@
-import { ApolloClient, InMemoryCache } from "@apollo/client";
+import { headers } from "next/headers";
+import { HttpLink } from "@apollo/client";
 import { relayStylePagination } from "@apollo/client/utilities";
+import {
+  registerApolloClient,
+  ApolloClient,
+  InMemoryCache,
+} from "@apollo/experimental-nextjs-app-support";
 
-const apolloClient = new ApolloClient({
-  uri: "/api/graphql",
-  cache: new InMemoryCache({
-    typePolicies: {
-      Query: {
-        fields: {
-          collectionSpaces: relayStylePagination(),
-          adminAllCollectionSpaces: relayStylePagination(),
-          adminAllUsers: relayStylePagination(),
-        },
-      },
-    },
-  }),
+const httpLink = new HttpLink({
+  uri: "http://localhost:3000/api/graphql",
+  headers: {
+    cookie: headers().get("cookie") ?? "",
+  },
 });
 
-export default apolloClient;
+const cache = new InMemoryCache({
+  typePolicies: {
+    Query: {
+      fields: {
+        collectionSpaces: relayStylePagination(),
+        adminAllCollectionSpaces: relayStylePagination(),
+        adminAllUsers: relayStylePagination(),
+      },
+    },
+  },
+});
+
+export const { getClient, query, PreloadQuery } = registerApolloClient(() => {
+  return new ApolloClient({
+    link: httpLink,
+    cache,
+  });
+});

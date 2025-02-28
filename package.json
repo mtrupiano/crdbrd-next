@@ -31,7 +31,7 @@
     "bcrypt": "^5.1.1",
     "graphql-scalars": "^1.23.0",
     "graphql-yoga": "^5.7.0",
-    "next": "14.2.13",
+    "next": ">=14.2.21",
     "next-auth": "5.0.0-beta.21",
     "react": "^18",
     "react-dom": "^18",

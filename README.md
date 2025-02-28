@@ -6,15 +6,16 @@ Full stack web application for tracking Magic the Gathering collections
 - GraphQL API (Yoga Server, Pothos)
 - NextJS front end
 
-### Running local front end
+### Run local front end
+`pnpm dev`
 
-`pnpm run dev`
+### Compile GraphQL types
+`pnpm compile-graphql`
+`pnpm watch-graphql`
 
-[localhost:3000](localhost:3000)
-
+[localhost:3000](http://localhost:3000)
 
 ### Database scripts
-- Re-seed db: `npx prisma db seed`
 - Run db migrations: `npx prisma migrate dev --name init`
 - Run db migrations: `pnpm migrate-db --name init`
 - Start db docker: `pnpm start-db`

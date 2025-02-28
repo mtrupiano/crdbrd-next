@@ -11,8 +11,8 @@
     "migrate-db": "npx prisma migrate dev",
     "kill-db": "cd ./src/lib/db && docker compose down --volumes",
     "stop-db": "cd ./src/lib/db && docker compose down",
-    "compile": "graphql-codegen",
-    "watch": "graphql-codegen -w"
+    "compile-graphql": "graphql-codegen",
+    "watch-graphql": "graphql-codegen -w"
   },
   "dependencies": {
     "@apollo/client": "^3.11.8",
@@ -22,6 +22,7 @@
     "@mui/lab": "6.0.0-beta.10",
     "@mui/material": "^6.1.1",
     "@mui/system": "^6.1.2",
+    "@parcel/watcher": "^2.5.1",
     "@pothos/core": "^4.3.0",
     "@pothos/plugin-prisma": "^4.2.1",
     "@pothos/plugin-relay": "^4.3.0",

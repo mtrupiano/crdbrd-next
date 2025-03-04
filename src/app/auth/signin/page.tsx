@@ -10,13 +10,7 @@ export default async function LoginPage() {
   }
 
   return (
-    <div
-      style={{
-        display: "flex",
-        justifyContent: "center",
-        padding: "100px",
-      }}
-    >
+    <div className="flext justify-center my-16">
       <SignInFormClient />
     </div>
   );

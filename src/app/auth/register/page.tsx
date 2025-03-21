@@ -8,14 +8,7 @@ export default async function RegisterPage() {
     redirect("/");
   }
   return (
-    // TODO: apply styling/layout
-    <div
-      style={{
-        display: "flex",
-        justifyContent: "center",
-        padding: "100px",
-      }}
-    >
+    <div className="flex justify-center">
       <RegisterFormClient />
     </div>
   );

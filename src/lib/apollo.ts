@@ -1,4 +1,3 @@
-import { headers } from "next/headers";
 import { HttpLink } from "@apollo/client";
 import { relayStylePagination } from "@apollo/client/utilities";
 import {
@@ -9,9 +8,6 @@ import {
 
 const httpLink = new HttpLink({
   uri: "http://localhost:3000/api/graphql",
-  headers: {
-    cookie: headers().get("cookie") ?? "",
-  },
 });
 
 const cache = new InMemoryCache({

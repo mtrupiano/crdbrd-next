@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
-import NavBar from "@/app/components/NavBar";
-import ApolloWrapper from "@/lib/ApolloWrapper";
+import NavBar from "./components/NavBar";
 
 export const metadata: Metadata = {
   title: "crdbrd",
@@ -16,10 +15,8 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
-        <ApolloWrapper>
-          <NavBar />
-          {children}
-        </ApolloWrapper>
+        <NavBar />
+        {children}
       </body>
     </html>
   );

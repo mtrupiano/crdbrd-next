@@ -1,20 +1,11 @@
-import { redirect } from "next/navigation";
 import { auth } from "@/lib/auth";
-import SignOutButton from "./SignOutButton";
-import CreateCollectionFormWrapper from "./CreateCollectionForm";
+import { redirect } from "next/navigation";
 
 export default async function Home() {
   const session = await auth();
-
   if (!session) {
     redirect("/auth/signin");
+  } else {
+    redirect("/home");
   }
-
-  return (
-    <>
-      <div>Hello {JSON.stringify(session?.user)}</div>
-      <SignOutButton />
-      <CreateCollectionFormWrapper />
-    </>
-  );
 }

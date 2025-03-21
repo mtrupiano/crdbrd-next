@@ -1,11 +1,17 @@
-export default function NavBar() {
+import { auth } from "@/lib/auth";
+import SignOutButton from "./SignOutButton";
+
+export default async function NavBar() {
+  const session = await auth();
   return (
-    <nav className="bg-white dark:bg-gray-900 border-gray-200">
-      <div className="max-w-screen-xl flex flex-wrap justify-between mx-auto p-4">
-        <a href="/">
-          <span className="text-2xl dark:text-white">Home</span>
-        </a>
-      </div>
+    <nav className="bg-blue-950 w-full h-28 flex items-center justify-between px-8">
+      <a href="/">
+        <span className="text-2xl text-white">Home</span>
+      </a>
+      {session && (
+        <span className="text-white">Hello {session?.user?.email}</span>
+      )}
+      {session && <SignOutButton />}
     </nav>
   );
 }

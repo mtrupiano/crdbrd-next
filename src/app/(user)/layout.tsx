@@ -1,6 +1,5 @@
 import { redirect } from "next/navigation";
 import { auth } from "@/lib/auth";
-import NavBar from "@/app/components/NavBar";
 
 export default async function UserLayout({
   children,

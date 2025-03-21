@@ -11,10 +11,5 @@ export default async function UserLayout({
   if (!session) {
     redirect("/auth/signin");
   }
-  return (
-    <>
-      <NavBar />
-      {children}
-    </>
-  );
+  return <>{children}</>;
 }

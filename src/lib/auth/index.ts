@@ -44,11 +44,10 @@ const authOptions: NextAuthConfig = {
             email,
           },
         });
-        const passwordsMatch = await bcrypt.compare(password, user?.password);
+        if (!user) return null;
 
-        if (!user || !passwordsMatch) {
-          return null;
-        }
+        const passwordsMatch = await bcrypt.compare(password, user?.password);
+        if (!passwordsMatch) return null;
 
         return user;
       },

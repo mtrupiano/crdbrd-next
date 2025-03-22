@@ -1,3 +1,26 @@
 @import 'tailwindcss';
 
-@config '../../tailwind.config.ts';
+@theme {
+  --color-steel-blue-50: #f3f7fb;
+  --color-steel-blue-100: #e3eef6;
+  --color-steel-blue-200: #cee2ef;
+  --color-steel-blue-300: #accee4;
+  --color-steel-blue-400: #84b4d6;
+  --color-steel-blue-500: #679bca;
+  --color-steel-blue-600: #5584bd;
+  --color-steel-blue-700: #4971ac;
+  --color-steel-blue-800: #405d8d;
+  --color-steel-blue-900: #374e71;
+  --color-steel-blue-950: #253246;
+}
+
+@layer utilities {
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+}

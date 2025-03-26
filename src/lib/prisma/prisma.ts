@@ -1,11 +1,5 @@
 import { Prisma, PrismaClient } from "@prisma/client";
 
-let prisma: PrismaClient;
-
-declare global {
-  const prisma: PrismaClient;
-}
-
 const filterArchived = Prisma.defineExtension({
   name: "filterArchived",
   query: {
@@ -25,13 +19,19 @@ const filterArchived = Prisma.defineExtension({
   },
 });
 
+const client = new PrismaClient().$extends(filterArchived);
+
+declare global {
+  var prisma: typeof client;
+}
+
 if (process.env.NODE_ENV === "production") {
-  prisma = new PrismaClient().$extends(filterArchived);
+  prisma = client;
 } else {
-  if (!global.prisma) {
-    global.prisma = new PrismaClient().$extends(filterArchived);
+  if (!globalThis.prisma) {
+    globalThis.prisma = client;
   }
-  prisma = global.prisma;
+  prisma = globalThis.prisma;
 }
 
 export default prisma;

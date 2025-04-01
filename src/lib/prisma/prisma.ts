@@ -22,7 +22,8 @@ const filterArchived = Prisma.defineExtension({
 const client = new PrismaClient().$extends(filterArchived);
 
 declare global {
-  var prisma: typeof client;
+  // eslint-disable-next-line no-var
+  var prisma: typeof client; // var needed when declaring global
 }
 
 if (process.env.NODE_ENV === "production") {

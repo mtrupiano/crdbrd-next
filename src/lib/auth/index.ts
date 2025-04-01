@@ -1,9 +1,9 @@
-import NextAuth, { User, NextAuthConfig } from "next-auth";
-import Credentials from "next-auth/providers/credentials";
+import NextAuth, { NextAuthConfig } from "next-auth";
+import CredentialsProvider from "next-auth/providers/credentials";
 import bcrypt from "bcrypt";
 import prisma from "@/lib/prisma/prisma";
 
-export const BASE_PATH = "/api/auth";
+const BASE_PATH = "/api/auth";
 
 const authOptions: NextAuthConfig = {
   pages: {
@@ -14,7 +14,7 @@ const authOptions: NextAuthConfig = {
   },
   callbacks: {
     async session({ session, token }) {
-      if (session?.user) {
+      if (session?.user && token?.sub) {
         session.user.id = token.sub;
       }
       return session;
@@ -27,26 +27,27 @@ const authOptions: NextAuthConfig = {
     },
   },
   providers: [
-    Credentials({
+    CredentialsProvider({
       name: "credentials",
       id: "credentials",
       credentials: {
         email: {},
         password: {},
       },
-      async authorize(credentials: {
-        email: string;
-        password: string;
-      }): Promise<User | null> {
-        const { email, password } = credentials;
+      async authorize(credentials) {
+        // TODO: figure out why credentials are correctly typed
+        const { email, password } = credentials as {
+          email: string;
+          password: string;
+        };
         const user = await prisma.user.findUnique({
           where: {
             email,
           },
         });
-        if (!user) return null;
+        if (!user || !user.password) return null;
 
-        const passwordsMatch = await bcrypt.compare(password, user?.password);
+        const passwordsMatch = bcrypt.compare(password, user?.password);
         if (!passwordsMatch) return null;
 
         return user;
@@ -57,9 +58,4 @@ const authOptions: NextAuthConfig = {
   secret: process.env.NEXTAUTH_SECRET,
 };
 
-export const {
-  handlers,
-  auth,
-  signIn,
-  signOut,
-} = NextAuth(authOptions);
+export const { handlers, auth, signIn, signOut } = NextAuth(authOptions);

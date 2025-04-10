@@ -4,6 +4,8 @@ import z from "zod";
 import { zfd } from "zod-form-data";
 import { authSafeActionClient } from "@/lib/safeAction";
 import { revalidatePath } from "next/cache";
+import { Prisma, Visibility } from "@prisma/client";
+import { returnValidationErrors } from "next-safe-action";
 
 const FetchCollectionsSchema = z.object({
   skip: z.number(),
@@ -36,6 +38,7 @@ export const fetchCollections = authSafeActionClient
   .action(async ({ ctx, clientInput }) => {
     const { skip, take } = clientInput;
     const { userId } = ctx;
+
     const [collections, total] = await prisma.$transaction([
       prisma.collectionSpace.findMany({
         skip,
@@ -45,6 +48,14 @@ export const fetchCollections = authSafeActionClient
         },
         where: {
           userId,
+        },
+        include: {
+          _count: {
+            select: {
+              realWorldLocations: true,
+              cards: true,
+            },
+          },
         },
       }),
       prisma.collectionSpace.count({
@@ -58,26 +69,21 @@ export const fetchCollections = authSafeActionClient
       collections,
       metadata: {
         hasNextPage: take + skip < total,
-        totalPages: Math.ceil(total / take),
+        totalPages: Math.ceil(10 / total),
       },
     };
   });
 
 export const createCollectionSpace = authSafeActionClient
   .schema(CreateCollectionFormSchema)
-  .action(async ({ ctx, clientInput }) => {
-    const parsed = CreateCollectionFormSchema.safeParse(clientInput);
-    const {
-      "collection-name": name,
-      "collection-description": description,
-      "collection-visibility": visibility,
-    } = parsed.data;
+  .action(async ({ ctx, parsedInput }) => {
+    const { name, description, visibility } = parsedInput;
     try {
       const newCollection = await prisma.collectionSpace.create({
         data: {
-          description,
-          name,
-          visibility: visibility.toUpperCase(),
+          description: description?.trim(),
+          name: name?.trim(),
+          visibility,
           user: {
             connect: {
               id: ctx.userId,
@@ -85,12 +91,19 @@ export const createCollectionSpace = authSafeActionClient
           },
         },
       });
-      console.log({ newCollection });
       revalidatePath("/");
       return newCollection;
     } catch (error) {
-      console.log({ error });
-      // return error;
-      throw new Error(error);
+      if (error instanceof Prisma.PrismaClientKnownRequestError) {
+        if (error.code === "P2002") {
+          returnValidationErrors(CreateCollectionFormSchema, {
+            name: {
+              _errors: ["A Collection with that name already exists"],
+            },
+          });
+        }
+      } else {
+        throw new Error();
+      }
     }
   });

@@ -4,12 +4,12 @@ export default function RadioButton({
   name,
   inputValueName,
   defaultChecked,
-}: ReadOnly<{
+}: Readonly<{
   label: string | React.ReactNode;
   id: string;
   name: string;
   inputValueName: string;
-  defaultChecked: boolean;
+  defaultChecked?: boolean;
 }>) {
   return (
     <div className="flex items-center">

@@ -1,10 +1,9 @@
 import React from "react";
-import RadioButton from "./RadioButton";
-type RadioButtonType = typeof RadioButton;
+
 export default function RadioButtonGroup({
   children,
-}: ReadOnly<{
-  children: RadioButtonType[];
+}: Readonly<{
+  children: React.ReactNode;
 }>) {
   return (
     <fieldset>

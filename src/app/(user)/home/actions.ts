@@ -11,9 +11,11 @@ const FetchCollectionsSchema = z.object({
 });
 
 const CreateCollectionFormSchema = zfd.formData({
-  "collection-name": zfd.text(z.string().min(1)),
-  "collection-description": zfd.text(z.string().max(256).optional()),
-  "collection-visibility": zfd.text(z.enum(["public", "private", "unlisted"])),
+  name: zfd.text(z.string().min(1)),
+  description: zfd.text(z.string().max(256).optional()),
+  visibility: zfd.text(
+    z.enum([Visibility.PRIVATE, Visibility.PUBLIC, Visibility.UNLISTED]),
+  ),
 });
 
 export const deleteCollection = async (collectionSpaceId: string) => {

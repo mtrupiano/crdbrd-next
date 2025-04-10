@@ -16,6 +16,19 @@ const CreateCollectionFormSchema = zfd.formData({
   "collection-visibility": zfd.text(z.enum(["public", "private", "unlisted"])),
 });
 
+export const deleteCollection = async (collectionSpaceId: string) => {
+  const result = await prisma.collectionSpace.update({
+    where: {
+      id: collectionSpaceId,
+    },
+    data: {
+      archivedAt: new Date(),
+    },
+  });
+  revalidatePath("/");
+  return result;
+};
+
 export const fetchCollections = authSafeActionClient
   .schema(FetchCollectionsSchema)
   .action(async ({ ctx, clientInput }) => {

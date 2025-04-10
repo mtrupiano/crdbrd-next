@@ -10,5 +10,5 @@ export default async function UserLayout({
   if (!session) {
     redirect("/auth/signin");
   }
-  return <div className="py-4 px-8">{children}</div>;
+  return <>{children}</>;
 }
